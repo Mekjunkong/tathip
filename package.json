@@ -9,7 +9,10 @@
     "lint": "eslint",
     "seed": "tsx scripts/seed-knowledge.ts",
     "ingest:wiki": "tsx scripts/ingest-wikisource.ts",
-    "ingest:pdf": "tsx scripts/ingest-pdf.ts"
+    "ingest:pdf": "tsx scripts/ingest-pdf.ts",
+    "scrape": "tsx scripts/scrape-all-sources.ts",
+    "ingest:json": "tsx scripts/ingest-json-to-supabase.ts",
+    "seed:full": "npm run scrape && npm run ingest:json"
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.47",
