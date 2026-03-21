@@ -2,12 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Starfield } from "@/components/ui/starfield";
 import { useChatStore } from "@/stores/chat-store";
 import { t } from "@/lib/i18n";
-import { ArrowRight, Sparkles, Eye, Star, ChevronDown } from "lucide-react";
+import { ArrowRight, Eye, Star, Sparkles } from "lucide-react";
 import {
   ZodiacIcon,
   TarotIcon,
@@ -15,7 +14,7 @@ import {
   BaZiIcon,
 } from "@/components/icons/mystical-icons";
 
-/* ─── Feature cards data ─── */
+/* ─── Feature cards ─── */
 const FEATURES = [
   {
     Icon: ZodiacIcon,
@@ -59,263 +58,91 @@ const FEATURES = [
   },
 ] as const;
 
-/* ─── How it works steps ─── */
+/* ─── How it works ─── */
 const STEPS_TH = [
-  {
-    num: "01",
-    title: "กรอกข้อมูลวันเกิด",
-    desc: "ระบุวัน เดือน ปี และเวลาเกิดของคุณ เพื่อความแม่นยำสูงสุด",
-    icon: "🌙",
-  },
-  {
-    num: "02",
-    title: "AI วิเคราะห์ดวงชะตา",
-    desc: "ระบบ AI ผสมผสานโหราศาสตร์ 4 ศาสตร์ เพื่อการพยากรณ์ที่ครอบคลุม",
-    icon: "✨",
-  },
-  {
-    num: "03",
-    title: "รับคำทำนายส่วนตัว",
-    desc: "อ่านผลดูดวงเชิงลึก และถามคำถามเพิ่มเติมได้ไม่จำกัด",
-    icon: "🔮",
-  },
+  { num: "01", title: "กรอกข้อมูลวันเกิด", desc: "ระบุวัน เดือน ปี และเวลาเกิดของคุณ เพื่อความแม่นยำสูงสุด", icon: "🌙" },
+  { num: "02", title: "AI วิเคราะห์ดวงชะตา", desc: "ระบบ AI ผสมผสานโหราศาสตร์ 4 ศาสตร์ เพื่อการพยากรณ์ที่ครอบคลุม", icon: "✨" },
+  { num: "03", title: "รับคำทำนายส่วนตัว", desc: "อ่านผลดูดวงเชิงลึก และถามคำถามเพิ่มเติมได้ไม่จำกัด", icon: "🔮" },
 ];
-
 const STEPS_EN = [
-  {
-    num: "01",
-    title: "Enter Your Birth Data",
-    desc: "Provide your date, month, year, and time of birth for maximum accuracy.",
-    icon: "🌙",
-  },
-  {
-    num: "02",
-    title: "AI Analyzes Your Chart",
-    desc: "Our AI blends 4 astrological traditions for a comprehensive reading.",
-    icon: "✨",
-  },
-  {
-    num: "03",
-    title: "Receive Your Personal Reading",
-    desc: "Get in-depth fortune insights and ask unlimited follow-up questions.",
-    icon: "🔮",
-  },
+  { num: "01", title: "Enter Your Birth Data", desc: "Provide your date, month, year, and time of birth for maximum accuracy.", icon: "🌙" },
+  { num: "02", title: "AI Analyzes Your Chart", desc: "Our AI blends 4 astrological traditions for a comprehensive reading.", icon: "✨" },
+  { num: "03", title: "Receive Your Personal Reading", desc: "Get in-depth fortune insights and ask unlimited follow-up questions.", icon: "🔮" },
 ];
 
 /* ─── Testimonials ─── */
 const TESTIMONIALS_TH = [
-  {
-    quote: "ตาทิพย์บอกเรื่องความรักได้แม่นมาก ประหลาดใจมากเลย ไม่คิดว่า AI จะทำได้ขนาดนี้",
-    name: "ปวีณา ส.",
-    role: "ลูกค้าประจำ",
-    stars: 5,
-  },
-  {
-    quote: "ดูดวงเรื่องการงานแล้วได้ข้อมูลที่ลึกมาก ช่วยตัดสินใจเรื่องงานได้จริงๆ",
-    name: "ธนพล ก.",
-    role: "นักธุรกิจ",
-    stars: 5,
-  },
-  {
-    quote: "ไพ่ทาโรต์ที่นี่ตีความได้ดีมาก เหมือนคุยกับหมอดูจริงๆ แต่สะดวกกว่าเยอะ",
-    name: "มณีรัตน์ พ.",
-    role: "ครู",
-    stars: 5,
-  },
+  { quote: "ตาทิพย์บอกเรื่องความรักได้แม่นมาก ประหลาดใจมากเลย ไม่คิดว่า AI จะทำได้ขนาดนี้", name: "ปวีณา ส.", role: "ลูกค้าประจำ", stars: 5 },
+  { quote: "ดูดวงเรื่องการงานแล้วได้ข้อมูลที่ลึกมาก ช่วยตัดสินใจเรื่องงานได้จริงๆ", name: "ธนพล ก.", role: "นักธุรกิจ", stars: 5 },
+  { quote: "ไพ่ทาโรต์ที่นี่ตีความได้ดีมาก เหมือนคุยกับหมอดูจริงๆ แต่สะดวกกว่าเยอะ", name: "มณีรัตน์ พ.", role: "ครู", stars: 5 },
 ];
-
 const TESTIMONIALS_EN = [
-  {
-    quote: "TaThip's love reading was incredibly accurate. I was amazed at how precise the AI was.",
-    name: "Pawina S.",
-    role: "Regular User",
-    stars: 5,
-  },
-  {
-    quote: "The career reading gave me deep insights that genuinely helped me make a major decision.",
-    name: "Thanaphol K.",
-    role: "Entrepreneur",
-    stars: 5,
-  },
-  {
-    quote: "The Tarot interpretation here is excellent — like talking to a real fortune teller, but far more convenient.",
-    name: "Maneerat P.",
-    role: "Teacher",
-    stars: 5,
-  },
+  { quote: "TaThip's love reading was incredibly accurate. I was amazed at how precise the AI was.", name: "Pawina S.", role: "Regular User", stars: 5 },
+  { quote: "The career reading gave me deep insights that genuinely helped me make a major decision.", name: "Thanaphol K.", role: "Entrepreneur", stars: 5 },
+  { quote: "The Tarot interpretation here is excellent — like talking to a real fortune teller, but far more convenient.", name: "Maneerat P.", role: "Teacher", stars: 5 },
 ];
 
 export default function HomePage() {
   const language = useChatStore((s) => s.language);
-  const heroRef = useRef<HTMLDivElement>(null);
   const steps = language === "th" ? STEPS_TH : STEPS_EN;
   const testimonials = language === "th" ? TESTIMONIALS_TH : TESTIMONIALS_EN;
 
-  const scrollToContent = () => {
-    const el = document.getElementById("features");
-    el?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <main className="relative flex flex-col items-center overflow-hidden">
-      <Starfield count={100} />
+      <Starfield count={80} />
 
       {/* ══════════════════════════════════════════
-          HERO — Full-screen banner with overlay
+          HERO — Banner image only, no text overlay
       ══════════════════════════════════════════ */}
-      <section
-        ref={heroRef}
-        className="relative w-full min-h-dvh flex flex-col items-center justify-center overflow-hidden"
-      >
-        {/* Banner image — fills entire hero */}
-        <div className="absolute inset-0 z-0">
+      <section className="relative w-full">
+        {/* Banner image — displayed as-is, full width */}
+        <div className="relative w-full">
           <Image
             src="/tathip-banner.png"
-            alt="TATHIP Banner"
-            fill
+            alt="TATHIP — ตาทิพย์ที่มองเห็นชะตาของคุณ"
+            width={2752}
+            height={1536}
             priority
-            className="object-cover object-center"
+            className="w-full h-auto block"
             sizes="100vw"
           />
-          {/* Dark overlay for readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
+          {/* Smooth fade into the page background at the bottom */}
+          <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background to-transparent pointer-events-none" />
         </div>
+      </section>
 
-        {/* Floating ambient orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-600/10 rounded-full blur-3xl animate-glow-pulse pointer-events-none z-[1]" />
-        <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl animate-glow-pulse pointer-events-none z-[1]" style={{ animationDelay: "1.5s" }} />
-
-        {/* Hero content — sits on top of banner */}
-        <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto pt-20 pb-32">
-          {/* Eyebrow label */}
-          <div
-            className="mb-6 animate-fade-in-up"
-            style={{ animationDelay: "100ms", animationFillMode: "both" }}
-          >
-            <span className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.3em] uppercase text-violet-300/70 border border-violet-500/20 rounded-full px-4 py-1.5 backdrop-blur-sm bg-violet-500/5">
-              <Sparkles className="w-3 h-3" />
-              {language === "th" ? "AI ดูดวงอัจฉริยะ" : "AI-Powered Fortune Telling"}
-            </span>
-          </div>
-
-          {/* Main title */}
-          <div
-            className="animate-fade-in-up"
-            style={{ animationDelay: "250ms", animationFillMode: "both" }}
-          >
-            <h1
-              className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-wider leading-none"
-              style={{ fontFamily: "var(--font-cinzel), serif" }}
-            >
-              <span className="bg-gradient-to-b from-white via-violet-100 to-violet-400/70 bg-clip-text text-transparent drop-shadow-[0_0_60px_rgba(139,92,246,0.5)]">
-                {t(language, "siteName")}
+      {/* ══════════════════════════════════════════
+          STATS ROW — just below the banner
+      ══════════════════════════════════════════ */}
+      <section className="relative z-10 w-full max-w-3xl px-4 -mt-8 mb-16">
+        <div className="flex items-center justify-center gap-8 md:gap-16 flex-wrap">
+          {[
+            { value: "4", label: language === "th" ? "ศาสตร์โหราศาสตร์" : "Astrology Systems" },
+            { value: "78", label: language === "th" ? "ใบไพ่ทาโรต์" : "Tarot Cards" },
+            { value: "∞", label: language === "th" ? "คำถามไม่จำกัด" : "Unlimited Questions" },
+          ].map((stat, i) => (
+            <div key={i} className="flex flex-col items-center gap-1">
+              <span
+                className="text-3xl md:text-4xl font-bold bg-gradient-to-b from-white to-violet-300 bg-clip-text text-transparent"
+                style={{ fontFamily: "var(--font-cinzel), serif" }}
+              >
+                {stat.value}
               </span>
-            </h1>
-          </div>
-
-          {/* Tagline */}
-          <p
-            className="mt-5 text-sm md:text-base text-violet-300/60 font-light tracking-[0.3em] uppercase animate-fade-in-up"
-            style={{ animationDelay: "400ms", animationFillMode: "both" }}
-          >
-            {t(language, "tagline")}
-          </p>
-
-          {/* Description */}
-          <p
-            className="mt-6 text-base md:text-lg text-foreground/60 max-w-lg mx-auto leading-relaxed animate-fade-in-up"
-            style={{ animationDelay: "550ms", animationFillMode: "both" }}
-          >
-            {t(language, "aiDescription")}
-          </p>
-
-          {/* Donation badge */}
-          <div
-            className="mt-6 animate-fade-in-up"
-            style={{ animationDelay: "650ms", animationFillMode: "both" }}
-          >
-            <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-amber-500/25 bg-amber-500/5 backdrop-blur-sm">
-              <span className="text-amber-400 text-sm">&#9781;</span>
-              <span className="text-xs md:text-sm text-amber-300/80 font-medium">
-                {t(language, "donationBadge")}
-              </span>
+              <span className="text-xs text-muted-foreground/50 tracking-wide text-center">{stat.label}</span>
             </div>
-          </div>
-
-          {/* CTA buttons */}
-          <div
-            className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in-up"
-            style={{ animationDelay: "750ms", animationFillMode: "both" }}
-          >
-            <Link href="/chat">
-              <Button
-                size="lg"
-                className="group relative text-base px-10 py-6 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-2xl shadow-violet-900/50 transition-all duration-300 hover:shadow-violet-700/60 hover:scale-[1.03] cursor-pointer overflow-hidden rounded-xl"
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  {t(language, "startReading")}
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/15 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-              </Button>
-            </Link>
-            <Link href="/chat">
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-base px-10 py-6 border-violet-500/25 text-violet-300/80 hover:bg-violet-500/10 hover:border-violet-400/40 hover:text-violet-200 transition-all duration-300 cursor-pointer backdrop-blur-sm rounded-xl"
-              >
-                {t(language, "tryTarot")}
-              </Button>
-            </Link>
-          </div>
-
-          {/* Stats row */}
-          <div
-            className="mt-14 flex items-center gap-8 md:gap-12 animate-fade-in-up"
-            style={{ animationDelay: "900ms", animationFillMode: "both" }}
-          >
-            {[
-              { value: "4", label: language === "th" ? "ศาสตร์โหราศาสตร์" : "Astrology Systems" },
-              { value: "78", label: language === "th" ? "ใบไพ่ทาโรต์" : "Tarot Cards" },
-              { value: "∞", label: language === "th" ? "คำถามไม่จำกัด" : "Unlimited Questions" },
-            ].map((stat, i) => (
-              <div key={i} className="flex flex-col items-center gap-1">
-                <span
-                  className="text-2xl md:text-3xl font-bold bg-gradient-to-b from-white to-violet-300 bg-clip-text text-transparent"
-                  style={{ fontFamily: "var(--font-cinzel), serif" }}
-                >
-                  {stat.value}
-                </span>
-                <span className="text-xs text-muted-foreground/50 tracking-wide">{stat.label}</span>
-              </div>
-            ))}
-          </div>
+          ))}
         </div>
-
-        {/* Scroll indicator */}
-        <button
-          onClick={scrollToContent}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-violet-400/40 hover:text-violet-400/70 transition-colors cursor-pointer"
-          aria-label="Scroll down"
-        >
-          <span className="text-xs tracking-widest uppercase">
-            {language === "th" ? "เลื่อนลง" : "Scroll"}
-          </span>
-          <ChevronDown className="w-5 h-5 animate-bounce" />
-        </button>
       </section>
 
       {/* ══════════════════════════════════════════
           FEATURES — 4 divination arts
       ══════════════════════════════════════════ */}
-      <section id="features" className="relative z-10 w-full max-w-5xl px-4 py-24">
-        {/* Section header */}
-        <div className="text-center mb-14">
-          <p className="text-xs font-medium tracking-[0.3em] uppercase text-violet-400/50 mb-3">
+      <section id="features" className="relative z-10 w-full max-w-5xl px-4 py-16">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.3em] uppercase text-violet-400/50 mb-3">
+            <Sparkles className="w-3 h-3" />
             {language === "th" ? "ศาสตร์แห่งการพยากรณ์" : "The Arts of Divination"}
-          </p>
+          </div>
           <h2
             className="text-3xl md:text-4xl font-bold bg-gradient-to-b from-white to-violet-300/70 bg-clip-text text-transparent"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
@@ -334,31 +161,19 @@ export default function HomePage() {
             const { Icon } = feature;
             return (
               <Link key={i} href="/chat" className="group cursor-pointer">
-                <div
-                  className={`relative h-full rounded-2xl border border-white/[0.07] bg-white/[0.02] p-6 text-center transition-all duration-300 ${feature.border} ${feature.bg} hover:-translate-y-2 hover:shadow-xl ${feature.glow} backdrop-blur-sm`}
-                >
-                  {/* Glow behind icon */}
-                  <div className={`absolute top-6 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-300 bg-current ${feature.color}`} />
-
-                  {/* Icon */}
+                <div className={`relative h-full rounded-2xl border border-white/[0.07] bg-white/[0.02] p-6 text-center transition-all duration-300 ${feature.border} ${feature.bg} hover:-translate-y-2 hover:shadow-xl ${feature.glow} backdrop-blur-sm`}>
                   <div className={`${feature.color} flex justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
                     <Icon className="w-14 h-14 md:w-16 md:h-16" />
                   </div>
-
-                  {/* Badge */}
                   <span className={`inline-block text-[10px] font-medium tracking-widest uppercase px-2 py-0.5 rounded-full border mb-3 ${feature.color} border-current opacity-50`}>
                     {feature.badge}
                   </span>
-
-                  {/* Text */}
                   <h3 className="font-semibold text-sm md:text-base text-foreground/80 mb-2 group-hover:text-foreground transition-colors">
                     {t(language, feature.titleKey)}
                   </h3>
                   <p className="text-xs md:text-sm text-muted-foreground/50 leading-relaxed">
                     {t(language, feature.descKey)}
                   </p>
-
-                  {/* Arrow */}
                   <div className={`mt-4 flex items-center justify-center gap-1 text-xs ${feature.color} opacity-0 group-hover:opacity-70 transition-all duration-300 translate-y-1 group-hover:translate-y-0`}>
                     <span>{language === "th" ? "เริ่มดูดวง" : "Start Reading"}</span>
                     <ArrowRight className="w-3 h-3" />
@@ -374,10 +189,7 @@ export default function HomePage() {
           HOW IT WORKS — 3 steps
       ══════════════════════════════════════════ */}
       <section className="relative z-10 w-full max-w-4xl px-4 py-16">
-        {/* Decorative line */}
-        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-violet-500/20 to-transparent pointer-events-none hidden md:block" />
-
-        <div className="text-center mb-14">
+        <div className="text-center mb-12">
           <p className="text-xs font-medium tracking-[0.3em] uppercase text-violet-400/50 mb-3">
             {language === "th" ? "วิธีใช้งาน" : "How It Works"}
           </p>
@@ -392,24 +204,17 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {steps.map((step, i) => (
             <div key={i} className="relative flex flex-col items-center text-center group">
-              {/* Connector line between steps (desktop) */}
               {i < steps.length - 1 && (
                 <div className="hidden md:block absolute top-10 left-[calc(50%+3rem)] right-[-50%] h-px bg-gradient-to-r from-violet-500/30 to-transparent" />
               )}
-
-              {/* Step number circle */}
               <div className="relative mb-5">
                 <div className="w-20 h-20 rounded-full border border-violet-500/20 bg-violet-500/5 backdrop-blur-sm flex items-center justify-center group-hover:border-violet-500/40 group-hover:bg-violet-500/10 transition-all duration-300">
                   <span className="text-3xl">{step.icon}</span>
                 </div>
-                <span
-                  className="absolute -top-2 -right-2 text-xs font-bold text-violet-400/40 tracking-wider"
-                  style={{ fontFamily: "var(--font-cinzel), serif" }}
-                >
+                <span className="absolute -top-2 -right-2 text-xs font-bold text-violet-400/40 tracking-wider" style={{ fontFamily: "var(--font-cinzel), serif" }}>
                   {step.num}
                 </span>
               </div>
-
               <h3 className="font-semibold text-base md:text-lg text-foreground/80 mb-2 group-hover:text-foreground transition-colors">
                 {step.title}
               </h3>
@@ -420,7 +225,6 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* CTA under steps */}
         <div className="mt-12 flex justify-center">
           <Link href="/chat">
             <Button
@@ -455,23 +259,15 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {testimonials.map((item, i) => (
-            <div
-              key={i}
-              className="relative rounded-2xl border border-white/[0.07] bg-white/[0.02] backdrop-blur-sm p-6 hover:border-violet-500/20 hover:bg-violet-500/[0.03] transition-all duration-300"
-            >
-              {/* Stars */}
+            <div key={i} className="relative rounded-2xl border border-white/[0.07] bg-white/[0.02] backdrop-blur-sm p-6 hover:border-violet-500/20 hover:bg-violet-500/[0.03] transition-all duration-300">
               <div className="flex gap-0.5 mb-4">
                 {Array.from({ length: item.stars }).map((_, s) => (
                   <Star key={s} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                 ))}
               </div>
-
-              {/* Quote */}
               <p className="text-sm text-foreground/70 leading-relaxed mb-5 italic">
                 &ldquo;{item.quote}&rdquo;
               </p>
-
-              {/* Author */}
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-xs font-bold text-white">
                   {item.name.charAt(0)}
@@ -481,8 +277,6 @@ export default function HomePage() {
                   <p className="text-xs text-muted-foreground/50">{item.role}</p>
                 </div>
               </div>
-
-              {/* Decorative quote mark */}
               <div className="absolute top-4 right-5 text-4xl text-violet-500/10 font-serif leading-none select-none">
                 &ldquo;
               </div>
@@ -496,10 +290,8 @@ export default function HomePage() {
       ══════════════════════════════════════════ */}
       <section className="relative z-10 w-full max-w-3xl px-4 py-16">
         <div className="relative rounded-3xl border border-amber-500/15 bg-amber-500/[0.03] backdrop-blur-sm p-10 md:p-14 text-center overflow-hidden">
-          {/* Background glow */}
           <div className="absolute inset-0 bg-gradient-to-b from-amber-500/5 to-transparent pointer-events-none" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-amber-500/10 blur-3xl pointer-events-none" />
-
           <div className="relative z-10">
             <div className="text-4xl mb-5">&#9781;</div>
             <h3
@@ -511,22 +303,18 @@ export default function HomePage() {
             <p className="text-sm md:text-base text-muted-foreground/60 leading-relaxed max-w-lg mx-auto mb-8">
               {t(language, "donationDesc")}
             </p>
-
-            {/* Stats */}
-            <div className="flex items-center justify-center gap-4 md:gap-8 flex-wrap">
+            <div className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">
               {[
-                { value: "50%", label: language === "th" ? "บริจาค" : "Donated", icon: "💛" },
-                { value: "⛩", label: language === "th" ? "วัดบนดอย" : "Mountain Temples", icon: null },
-                { value: "🏘", label: language === "th" ? "ชาวบ้าน" : "Villagers", icon: null },
-                { value: "🇱🇦", label: language === "th" ? "ผู้ยากไร้ลาว" : "Laos Poor", icon: null },
+                { value: "50%", label: language === "th" ? "บริจาค" : "Donated" },
+                { value: "⛩", label: language === "th" ? "วัดบนดอย" : "Temples" },
+                { value: "🏘", label: language === "th" ? "ชาวบ้าน" : "Villagers" },
+                { value: "🇱🇦", label: language === "th" ? "ผู้ยากไร้ลาว" : "Laos" },
               ].map((item, i) => (
                 <div key={i} className="flex flex-col items-center gap-1.5">
                   <div className="w-12 h-12 rounded-full border border-amber-500/20 bg-amber-500/5 flex items-center justify-center">
                     <span className="text-xl">{item.value}</span>
                   </div>
-                  <span className="text-xs text-amber-400/50 text-center max-w-[72px] leading-tight">
-                    {item.label}
-                  </span>
+                  <span className="text-xs text-amber-400/50 text-center leading-tight">{item.label}</span>
                 </div>
               ))}
             </div>
@@ -539,23 +327,15 @@ export default function HomePage() {
       ══════════════════════════════════════════ */}
       <section className="relative z-10 w-full max-w-4xl px-4 pb-24">
         <div className="relative rounded-3xl overflow-hidden">
-          {/* Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-violet-900/60 via-indigo-900/40 to-violet-900/60 backdrop-blur-sm border border-violet-500/15" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.15),transparent_70%)]" />
-
-          {/* Stars decoration */}
           {[...Array(6)].map((_, i) => (
             <div
               key={i}
               className="absolute w-1 h-1 rounded-full bg-white/30 animate-twinkle"
-              style={{
-                top: `${20 + i * 12}%`,
-                left: `${5 + i * 15}%`,
-                animationDelay: `${i * 0.4}s`,
-              }}
+              style={{ top: `${20 + i * 12}%`, left: `${5 + i * 15}%`, animationDelay: `${i * 0.4}s` }}
             />
           ))}
-
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 p-10 md:p-14">
             <div className="text-center md:text-left">
               <div className="flex items-center gap-2 justify-center md:justify-start mb-3">
@@ -568,9 +348,7 @@ export default function HomePage() {
                 className="text-2xl md:text-3xl font-bold text-white mb-3"
                 style={{ fontFamily: "var(--font-cinzel), serif" }}
               >
-                {language === "th"
-                  ? "ดวงชะตาของคุณรอคุณอยู่"
-                  : "Your Destiny Awaits"}
+                {language === "th" ? "ดวงชะตาของคุณรอคุณอยู่" : "Your Destiny Awaits"}
               </h2>
               <p className="text-sm text-muted-foreground/60 max-w-sm">
                 {language === "th"
@@ -578,7 +356,6 @@ export default function HomePage() {
                   : "Start your free reading today. No sign-up required."}
               </p>
             </div>
-
             <div className="flex flex-col sm:flex-row gap-3 shrink-0">
               <Link href="/chat">
                 <Button
@@ -606,7 +383,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Bottom fade */}
       <div className="fixed bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none z-[1]" />
     </main>
   );
