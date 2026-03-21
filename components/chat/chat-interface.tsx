@@ -5,6 +5,7 @@
  *
  * Renders a streaming conversation with the TaThip AI fortune teller.
  * Automatically sends the user's birth data as the first message.
+ * Shows the natal chart wheel after the first AI response completes.
  * Features: markdown rendering, fade-in animations, typing indicator.
  */
 
@@ -15,7 +16,8 @@ import { useChatStore } from "@/stores/chat-store";
 import type { BirthData } from "@/stores/chat-store";
 import { t } from "@/lib/i18n";
 import type { UIMessage } from "ai";
-import { Send } from "lucide-react";
+import { Send, ChevronDown, ChevronUp } from "lucide-react";
+import { BirthChartPanel } from "@/components/chart/birth-chart-panel";
 
 interface ChatInterfaceProps {
   birthData: BirthData;
@@ -27,6 +29,8 @@ export function ChatInterface({ birthData }: ChatInterfaceProps) {
   const { messages, sendMessage, status, error } = useChat({});
 
   const [input, setInput] = useState("");
+  const [showChart, setShowChart] = useState(false);
+  const [chartExpanded, setChartExpanded] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const hasSentInitial = useRef(false);
@@ -41,10 +45,19 @@ export function ChatInterface({ birthData }: ChatInterfaceProps) {
     sendMessage({ text: msg });
   }, [birthData, sendMessage]);
 
+  // Show chart after first AI response completes
+  useEffect(() => {
+    const hasAssistantMessage = messages.some((m) => m.role === "assistant");
+    const isIdle = status === "ready" || status === "error";
+    if (hasAssistantMessage && isIdle && !showChart) {
+      setShowChart(true);
+    }
+  }, [messages, status, showChart]);
+
   // Auto-scroll to bottom on new messages
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, showChart]);
 
   const isLoading = status === "streaming" || status === "submitted";
 
@@ -99,6 +112,36 @@ export function ChatInterface({ birthData }: ChatInterfaceProps) {
                   {t(language, "errorMessage")}
                 </p>
               </div>
+            </div>
+          )}
+
+          {/* ── Birth Chart Panel (shown after first AI response) ── */}
+          {showChart && (
+            <div className="animate-fade-in-up" style={{ animationFillMode: "both" }}>
+              {/* Toggle header */}
+              <button
+                onClick={() => setChartExpanded((v) => !v)}
+                className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl border border-violet-500/20 bg-violet-500/5 hover:bg-violet-500/10 transition-colors mb-2 text-left"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-violet-400">🔮</span>
+                  <span className="text-sm font-medium text-violet-300">
+                    {language === "th" ? "แผนภูมิดาวเคราะห์ของคุณ" : "Your Natal Chart"}
+                  </span>
+                  <span className="text-xs text-violet-400/40 bg-violet-500/10 px-2 py-0.5 rounded-full">
+                    {language === "th" ? "Swiss Ephemeris · Lahiri" : "Swiss Ephemeris · Lahiri"}
+                  </span>
+                </div>
+                {chartExpanded ? (
+                  <ChevronUp className="w-4 h-4 text-violet-400/60" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-violet-400/60" />
+                )}
+              </button>
+
+              {chartExpanded && (
+                <BirthChartPanel birthData={birthData} language={language} />
+              )}
             </div>
           )}
 
@@ -203,7 +246,6 @@ function renderMarkdown(text: string): React.ReactNode {
  * Format inline markdown: **bold**, *italic*
  */
 function formatInline(text: string): React.ReactNode {
-  // Split on bold and italic patterns
   const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
   return parts.map((part, i) => {
     if (part.startsWith("**") && part.endsWith("**")) {
