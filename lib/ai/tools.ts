@@ -12,6 +12,17 @@ import { calculateThaiChart } from "@/lib/astrology/thai-chart";
 import { queryKnowledge } from "@/lib/ai/rag";
 import type { PlanetPosition } from "@/types/astrology";
 import { PLANET_NAMES } from "@/types/astrology";
+import {
+  drawSingleCard,
+  drawThreeCardSpread,
+  drawCelticCross,
+  formatSpread,
+} from "@/lib/tarot/deck";
+import {
+  calculateFullProfile,
+  analyzeThaiNumber,
+} from "@/lib/numerology/calculator";
+import { calculateBaZi, formatBaZiChart } from "@/lib/astrology/bazi";
 
 /**
  * Format a planet position into a human-readable summary line.
@@ -73,6 +84,152 @@ export const chatTools = {
             error instanceof Error
               ? error.message
               : "Failed to calculate birth chart",
+        };
+      }
+    },
+  }),
+
+  draw_tarot: tool({
+    description:
+      "Draw tarot cards for a reading. Supports single card, three-card (Past/Present/Future), or Celtic Cross (10 cards) spreads. Use this when the user asks for a tarot reading.",
+    inputSchema: z.object({
+      spreadType: z
+        .enum(["single", "three-card", "celtic-cross"])
+        .describe("Type of spread: 'single' for quick guidance, 'three-card' for past/present/future, 'celtic-cross' for in-depth reading"),
+    }),
+    execute: async (input) => {
+      try {
+        let spread;
+        switch (input.spreadType) {
+          case "single":
+            spread = drawSingleCard();
+            break;
+          case "three-card":
+            spread = drawThreeCardSpread();
+            break;
+          case "celtic-cross":
+            spread = drawCelticCross();
+            break;
+        }
+
+        return {
+          success: true,
+          spreadType: spread.spreadType,
+          spreadName: spread.name,
+          spreadNameThai: spread.nameThai,
+          reading: formatSpread(spread),
+          cards: spread.cards.map((c) => ({
+            name: c.card.name,
+            nameThai: c.card.nameThai,
+            position: c.position,
+            reversed: c.reversed,
+            meaning: c.reversed ? c.card.meaningReversed : c.card.meaningUpright,
+            meaningThai: c.reversed ? c.card.meaningReversedThai : c.card.meaningUprightThai,
+            keywords: c.card.keywords,
+            arcana: c.card.arcana,
+            suit: c.card.suit,
+          })),
+        };
+      } catch (error) {
+        return {
+          success: false,
+          error: error instanceof Error ? error.message : "Failed to draw tarot cards",
+        };
+      }
+    },
+  }),
+
+  calculate_numerology: tool({
+    description:
+      "Calculate numerology numbers from a person's name and birthdate (Life Path, Expression, Soul Urge), or analyze a phone number/license plate using Thai numerology (เลขศาสตร์). Use this when the user asks about numerology, lucky numbers, or number meanings.",
+    inputSchema: z.object({
+      type: z
+        .enum(["full-profile", "thai-number"])
+        .describe("'full-profile' for name+birthdate analysis, 'thai-number' for phone/license plate analysis"),
+      fullName: z
+        .string()
+        .optional()
+        .describe("Full name in English (for full-profile type)"),
+      birthDate: z
+        .string()
+        .optional()
+        .describe("Birth date in YYYY-MM-DD format (for full-profile type)"),
+      numberToAnalyze: z
+        .string()
+        .optional()
+        .describe("Phone number or license plate to analyze (for thai-number type)"),
+    }),
+    execute: async (input) => {
+      try {
+        if (input.type === "full-profile") {
+          if (!input.fullName || !input.birthDate) {
+            return {
+              success: false,
+              error: "Full name and birth date are required for a full numerology profile",
+            };
+          }
+          const profile = calculateFullProfile(input.fullName, input.birthDate);
+          return {
+            success: true,
+            type: "full-profile",
+            lifePath: profile.lifePath,
+            expression: profile.expression,
+            soulUrge: profile.soulUrge,
+            compatibility: profile.compatibility,
+          };
+        } else {
+          if (!input.numberToAnalyze) {
+            return {
+              success: false,
+              error: "A number (phone or license plate) is required for Thai number analysis",
+            };
+          }
+          const result = analyzeThaiNumber(input.numberToAnalyze);
+          return {
+            success: true,
+            type: "thai-number",
+            ...result,
+          };
+        }
+      } catch (error) {
+        return {
+          success: false,
+          error: error instanceof Error ? error.message : "Failed to calculate numerology",
+        };
+      }
+    },
+  }),
+
+  calculate_bazi: tool({
+    description:
+      "Calculate a Chinese BaZi (Four Pillars of Destiny / 八字) chart from birth date and time. Returns Year, Month, Day, Hour pillars with Heavenly Stems and Earthly Branches, Five Elements balance analysis, Chinese zodiac, and Day Master. Use this when the user asks about Chinese astrology, BaZi, Four Pillars, or their Chinese zodiac.",
+    inputSchema: z.object({
+      birthDate: z
+        .string()
+        .describe("Birth date in YYYY-MM-DD format"),
+      birthTime: z
+        .string()
+        .describe("Birth time in HH:mm format (24-hour)"),
+    }),
+    execute: async (input) => {
+      try {
+        const chart = calculateBaZi(input.birthDate, input.birthTime);
+        return {
+          success: true,
+          formattedChart: formatBaZiChart(chart),
+          chineseZodiac: chart.chineseZodiac,
+          chineseZodiacThai: chart.chineseZodiacThai,
+          dayMaster: `${chart.dayMaster.en} (${chart.dayMaster.zh}) — ${chart.dayMaster.yin_yang} ${chart.dayMaster.element}`,
+          dominantElement: chart.dominantElement,
+          weakestElement: chart.weakestElement,
+          elementBalance: chart.elementBalance,
+          summary: chart.summary,
+          summaryThai: chart.summaryThai,
+        };
+      } catch (error) {
+        return {
+          success: false,
+          error: error instanceof Error ? error.message : "Failed to calculate BaZi chart",
         };
       }
     },
