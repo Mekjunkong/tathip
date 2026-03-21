@@ -4,7 +4,7 @@
 
 ## Project Overview
 
-AI-powered fortune telling chatbot combining Thai, Western, Vedic, Chinese astrology, numerology, tarot, and feng shui. Currently Phase 1 MVP: Thai astrology chatbot with birth chart calculation and RAG knowledge base.
+AI-powered fortune telling chatbot combining Thai astrology, Tarot, Numerology, and Chinese BaZi. Phase 2 complete: multi-system fortune telling with premium mystical UI.
 
 **Domain:** tathip.com
 **Design Spec:** `docs/superpowers/specs/2026-03-21-hora-ai-fortune-teller-design.md`
@@ -29,15 +29,18 @@ AI-powered fortune telling chatbot combining Thai, Western, Vedic, Chinese astro
 ```
 User → Chat UI (useChat) → /api/chat (streamText) → AI Gateway (Claude)
                                     ↓ tool calls
-                          ┌─────────┴─────────┐
-                          ▼                   ▼
-                   Thai Birth Chart      RAG Knowledge
-                   (astronomy-engine)    (pgvector search)
+                    ┌───────────┬────────┬─────────┬──────────┐
+                    ▼           ▼        ▼         ▼          ▼
+              Thai Chart    Tarot    Numerology   BaZi    RAG Knowledge
+              (astronomy)   (deck)  (calculator) (pillars) (pgvector)
 ```
 
-- **Rules Engine:** astronomy-engine (pure JS) with Lahiri ayanamsa for sidereal planetary calculations. Code in `lib/astrology/`.
-- **RAG Knowledge Base:** Supabase pgvector with text-embedding-3-small. Authoritative Thai astrology texts chunked and embedded. Code in `lib/ai/rag.ts`.
-- **AI Chat:** AI SDK v6 with tool calling. Model routes through AI Gateway as plain string `"anthropic/claude-sonnet-4.6"`. Code in `app/api/chat/route.ts`.
+- **Thai Astrology:** astronomy-engine (pure JS) with Lahiri ayanamsa. Code in `lib/astrology/thai-chart.ts`.
+- **Chinese BaZi:** Four Pillars of Destiny with Five Elements analysis. Code in `lib/astrology/bazi.ts`.
+- **Tarot:** 78-card Rider-Waite deck with shuffle, draw, three spread types. Code in `lib/tarot/deck.ts`, types in `types/tarot.ts`.
+- **Numerology:** Pythagorean + Thai เลขศาสตร์ systems. Code in `lib/numerology/calculator.ts`.
+- **RAG Knowledge Base:** Supabase pgvector with text-embedding-3-small. Code in `lib/ai/rag.ts`.
+- **AI Chat:** AI SDK v6 with 5 tools (calculate_birth_chart, draw_tarot, calculate_numerology, calculate_bazi, lookup_knowledge). Code in `app/api/chat/route.ts`.
 
 ## Key Conventions
 
@@ -65,8 +68,10 @@ components/
 └── layout/header.tsx           # Auth-aware header with language toggle
 
 lib/
-├── ai/                         # System prompt, tools, RAG
-├── astrology/                  # Swiss Ephemeris wrapper, Thai chart calculator
+├── ai/                         # System prompt, tools (5 tools), RAG
+├── astrology/                  # Thai chart (swiss-ephemeris.ts, thai-chart.ts), Chinese BaZi (bazi.ts)
+├── tarot/                      # Tarot deck operations (deck.ts)
+├── numerology/                 # Numerology calculator (calculator.ts)
 ├── supabase/                   # Browser + server clients
 ├── i18n.ts                     # Thai/English translations
 └── rate-limit.ts               # 3 free messages/day
@@ -105,7 +110,7 @@ npm run ingest:pdf   # Ingest a PDF: npx tsx scripts/ingest-pdf.ts <path> [title
 
 ## Phase Status
 
-- [x] Phase 1: MVP — Thai astrology chatbot (current)
-- [ ] Phase 2: Multi-system expansion (Western, Vedic, Chinese, Tarot, Numerology)
+- [x] Phase 1: MVP — Thai astrology chatbot
+- [x] Phase 2: Multi-system expansion (Tarot, Numerology, Chinese BaZi) + UI polish
 - [ ] Phase 3: Monetization (credits, Stripe, SEO pages)
 - [ ] Phase 4: Premium features (Feng Shui, LINE, Mobile)
