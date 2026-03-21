@@ -92,10 +92,9 @@ export default function HomePage() {
       <Starfield count={80} />
 
       {/* ══════════════════════════════════════════
-          HERO — Banner image only, no text overlay
+          HERO — Banner image with real clickable buttons
       ══════════════════════════════════════════ */}
       <section className="relative w-full">
-        {/* Banner image — displayed as-is, full width */}
         <div className="relative w-full">
           <Image
             src="/tathip-banner.png"
@@ -106,6 +105,32 @@ export default function HomePage() {
             className="w-full h-auto block"
             sizes="100vw"
           />
+
+          {/* Real clickable buttons overlaid on the banner button area (~72-82% down) */}
+          <div className="absolute bottom-[12%] left-0 right-0 flex items-center justify-center gap-4 px-4">
+            <Link href="/chat">
+              <Button
+                size="lg"
+                className="group relative text-sm md:text-base px-6 md:px-8 py-3 md:py-5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-xl shadow-violet-900/50 transition-all duration-300 hover:scale-[1.03] cursor-pointer overflow-hidden rounded-xl font-medium"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  {language === "th" ? "เริ่มดูดวง" : "Start Reading"}
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/15 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              </Button>
+            </Link>
+            <Link href="/tarot">
+              <Button
+                size="lg"
+                variant="outline"
+                className="text-sm md:text-base px-6 md:px-8 py-3 md:py-5 border-white/20 text-white/80 hover:bg-white/10 hover:border-white/40 hover:text-white transition-all duration-300 cursor-pointer backdrop-blur-sm rounded-xl font-medium"
+              >
+                {language === "th" ? "ดูไพ่ทาโรต์" : "Tarot Reading"}
+              </Button>
+            </Link>
+          </div>
+
           {/* Smooth fade into the page background at the bottom */}
           <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background to-transparent pointer-events-none" />
         </div>
