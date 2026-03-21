@@ -60,6 +60,9 @@ export const translations = {
     tryAgain: "ลองอีกครั้ง",
     emptyStateTitle: "ตาทิพย์พร้อมดูดวงให้คุณ",
     emptyStateMessage: "เริ่มต้นด้วยการกรอกวันเกิดของคุณ หรือถามเรื่องอะไรก็ได้",
+    donationBadge: "รายได้ 50% บริจาคให้วัดบนดอย ชาวบ้าน และผู้ยากไร้ในลาว",
+    donationTitle: "ดูดวงเพื่อสร้างบุญ",
+    donationDesc: "ทุกครั้งที่คุณใช้บริการ 50% ของรายได้จะถูกบริจาคให้กับวัดบนดอย ชุมชนชาวบ้าน และผู้ยากไร้ในลาว",
   },
   en: {
     siteName: "TaThip",
@@ -116,6 +119,9 @@ export const translations = {
     tryAgain: "Try Again",
     emptyStateTitle: "TaThip is ready to read your fortune",
     emptyStateMessage: "Start by entering your birth data, or ask me anything.",
+    donationBadge: "50% of revenue donated to mountain temples, villagers & the poor in Laos",
+    donationTitle: "Readings that give back",
+    donationDesc: "Every time you use TaThip, 50% of revenue goes to mountain temples, local village communities, and the poor in Laos.",
   },
 } as const;
 

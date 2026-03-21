@@ -78,6 +78,19 @@ export default function HomePage() {
           {t(language, "aiDescription")}
         </p>
 
+        {/* Donation Badge */}
+        <div
+          className="mt-6 animate-fade-in-up"
+          style={{ animationDelay: "500ms", animationFillMode: "both" }}
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/20 bg-amber-500/5 backdrop-blur-sm">
+            <span className="text-amber-400 text-sm">&#9781;</span>
+            <span className="text-xs md:text-sm text-amber-300/80">
+              {t(language, "donationBadge")}
+            </span>
+          </div>
+        </div>
+
         {/* CTA */}
         <div
           className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in-up"
@@ -143,6 +156,40 @@ export default function HomePage() {
               </Link>
             );
           })}
+        </div>
+      </section>
+
+      {/* Donation Section */}
+      <section className="relative z-10 w-full max-w-2xl pb-24 text-center">
+        <div className="rounded-2xl border border-amber-500/15 bg-amber-500/[0.03] backdrop-blur-sm p-8 md:p-10">
+          <div className="text-3xl mb-4">&#9781;</div>
+          <h3 className="text-lg md:text-xl font-semibold text-amber-200/90 mb-3">
+            {t(language, "donationTitle")}
+          </h3>
+          <p className="text-sm md:text-base text-muted-foreground/60 leading-relaxed max-w-md mx-auto">
+            {t(language, "donationDesc")}
+          </p>
+          <div className="mt-6 flex items-center justify-center gap-6 text-amber-400/40">
+            <div className="flex flex-col items-center">
+              <span className="text-2xl font-bold text-amber-300/70">50%</span>
+              <span className="text-xs mt-1">{language === "th" ? "บริจาค" : "Donated"}</span>
+            </div>
+            <div className="w-px h-10 bg-amber-500/20" />
+            <div className="flex flex-col items-center">
+              <span className="text-lg">&#9968;</span>
+              <span className="text-xs mt-1">{language === "th" ? "วัดบนดอย" : "Temples"}</span>
+            </div>
+            <div className="w-px h-10 bg-amber-500/20" />
+            <div className="flex flex-col items-center">
+              <span className="text-lg">&#10084;&#65039;</span>
+              <span className="text-xs mt-1">{language === "th" ? "ชาวบ้าน" : "Villagers"}</span>
+            </div>
+            <div className="w-px h-10 bg-amber-500/20" />
+            <div className="flex flex-col items-center">
+              <span className="text-lg">&#127473;&#127462;</span>
+              <span className="text-xs mt-1">{language === "th" ? "ผู้ยากไร้ลาว" : "Laos"}</span>
+            </div>
+          </div>
         </div>
       </section>
 
