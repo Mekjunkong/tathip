@@ -3,19 +3,20 @@
 /**
  * Main chat interface using AI SDK v6 useChat hook.
  *
- * Renders a streaming conversation with the TaThip AI astrologer.
+ * Renders a streaming conversation with the TaThip AI fortune teller.
  * Automatically sends the user's birth data as the first message.
+ * Features: markdown rendering, fade-in animations, typing indicator.
  */
 
 import { useEffect, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card } from "@/components/ui/card";
 import { useChatStore } from "@/stores/chat-store";
 import type { BirthData } from "@/stores/chat-store";
 import { t } from "@/lib/i18n";
 import type { UIMessage } from "ai";
+import { Send } from "lucide-react";
 
 interface ChatInterfaceProps {
   birthData: BirthData;
@@ -40,7 +41,7 @@ export function ChatInterface({ birthData }: ChatInterfaceProps) {
   const language = useChatStore((s) => s.language);
   const initialMessages = createInitialMessages(birthData);
 
-  const { messages, sendMessage, status } = useChat({
+  const { messages, sendMessage, status, error } = useChat({
     messages: initialMessages,
   });
 
@@ -84,38 +85,68 @@ export function ChatInterface({ birthData }: ChatInterfaceProps) {
   return (
     <div className="flex flex-col h-full">
       {/* Messages area */}
-      <ScrollArea className="flex-1 px-4 py-4" ref={scrollRef}>
-        <div className="max-w-2xl mx-auto space-y-4">
-          {messages.map((message) => (
-            <MessageBubble key={message.id} message={message} />
+      <ScrollArea className="flex-1 px-4 py-6" ref={scrollRef}>
+        <div className="max-w-2xl mx-auto space-y-5">
+          {messages.map((message, index) => (
+            <MessageBubble key={message.id} message={message} index={index} />
           ))}
-          {isLoading && (
-            <div className="flex items-center gap-1 text-muted-foreground pl-2">
-              <span className="animate-pulse">&#9679;</span>
-              <span className="animate-pulse [animation-delay:200ms]">&#9679;</span>
-              <span className="animate-pulse [animation-delay:400ms]">&#9679;</span>
+
+          {/* Typing indicator */}
+          {isLoading && messages[messages.length - 1]?.role === "user" && (
+            <div className="flex items-start gap-3 animate-fade-in">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center flex-shrink-0 text-sm">
+                &#128302;
+              </div>
+              <div className="glass-card rounded-2xl rounded-tl-sm px-4 py-3">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-purple-400 animate-typing-dot" />
+                  <span className="w-2 h-2 rounded-full bg-purple-400 animate-typing-dot delay-200" />
+                  <span className="w-2 h-2 rounded-full bg-purple-400 animate-typing-dot delay-400" />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Error state */}
+          {error && (
+            <div className="flex justify-center animate-fade-in">
+              <div className="bg-destructive/10 border border-destructive/30 rounded-xl px-5 py-3 text-center max-w-sm">
+                <p className="text-sm font-medium text-destructive mb-1">
+                  {t(language, "errorTitle")}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {t(language, "errorMessage")}
+                </p>
+              </div>
             </div>
           )}
         </div>
       </ScrollArea>
 
       {/* Input area */}
-      <div className="border-t border-border/40 bg-background/80 backdrop-blur-xl p-4">
+      <div className="border-t border-border/30 bg-background/60 backdrop-blur-xl p-4">
         <form
           onSubmit={handleSubmit}
-          className="max-w-2xl mx-auto flex gap-2"
+          className="max-w-2xl mx-auto flex items-end gap-3"
         >
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={t(language, "askPlaceholder")}
-            rows={1}
-            className="flex-1 resize-none rounded-lg border border-input bg-background/50 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            disabled={isLoading}
-          />
-          <Button type="submit" size="sm" disabled={isLoading || !input.trim()}>
-            {t(language, "send")}
+          <div className="flex-1 relative">
+            <textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder={t(language, "askPlaceholder")}
+              rows={1}
+              className="w-full resize-none rounded-xl border border-border/40 bg-card/40 backdrop-blur-sm px-4 py-3 pr-12 text-sm ring-offset-background placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/40 focus-visible:border-purple-500/40 disabled:cursor-not-allowed disabled:opacity-50 transition-all"
+              disabled={isLoading}
+            />
+          </div>
+          <Button
+            type="submit"
+            size="icon"
+            disabled={isLoading || !input.trim()}
+            className="h-11 w-11 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 shadow-lg shadow-purple-900/20 transition-all hover:shadow-purple-900/40 disabled:opacity-40 flex-shrink-0 cursor-pointer"
+          >
+            <Send className="h-4 w-4" />
           </Button>
         </form>
       </div>
@@ -123,16 +154,121 @@ export function ChatInterface({ birthData }: ChatInterfaceProps) {
   );
 }
 
-function MessageBubble({ message }: { message: UIMessage }) {
+/**
+ * Renders simple markdown-like text: **bold**, *italic*, bullet lists, headings.
+ */
+function renderMarkdown(text: string): React.ReactNode {
+  const lines = text.split("\n");
+  const elements: React.ReactNode[] = [];
+  let listItems: string[] = [];
+
+  function flushList() {
+    if (listItems.length > 0) {
+      elements.push(
+        <ul key={`list-${elements.length}`} className="list-disc pl-5 space-y-1 my-2">
+          {listItems.map((item, i) => (
+            <li key={i}>{formatInline(item)}</li>
+          ))}
+        </ul>
+      );
+      listItems = [];
+    }
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Bullet list items
+    if (line.match(/^[\-\*]\s+/)) {
+      listItems.push(line.replace(/^[\-\*]\s+/, ""));
+      continue;
+    }
+
+    flushList();
+
+    // Headings
+    if (line.startsWith("### ")) {
+      elements.push(
+        <h4 key={i} className="font-semibold text-purple-300 mt-3 mb-1">
+          {formatInline(line.slice(4))}
+        </h4>
+      );
+    } else if (line.startsWith("## ")) {
+      elements.push(
+        <h3 key={i} className="font-bold text-purple-200 mt-4 mb-1 text-base">
+          {formatInline(line.slice(3))}
+        </h3>
+      );
+    } else if (line.trim() === "") {
+      elements.push(<div key={i} className="h-2" />);
+    } else {
+      elements.push(
+        <p key={i} className="leading-relaxed">
+          {formatInline(line)}
+        </p>
+      );
+    }
+  }
+
+  flushList();
+
+  return <>{elements}</>;
+}
+
+/**
+ * Format inline markdown: **bold**, *italic*
+ */
+function formatInline(text: string): React.ReactNode {
+  // Split on bold and italic patterns
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={i} className="font-semibold text-purple-300">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return (
+        <em key={i} className="italic text-purple-200/80">
+          {part.slice(1, -1)}
+        </em>
+      );
+    }
+    return part;
+  });
+}
+
+function MessageBubble({ message, index }: { message: UIMessage; index: number }) {
   const isUser = message.role === "user";
 
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <Card
-        className={`max-w-[85%] px-4 py-3 ${
+    <div
+      className={`flex items-start gap-3 animate-fade-in-up ${isUser ? "flex-row-reverse" : ""}`}
+      style={{
+        animationDelay: `${Math.min(index * 50, 300)}ms`,
+        animationFillMode: "both",
+      }}
+    >
+      {/* Avatar */}
+      {!isUser && (
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center flex-shrink-0 text-sm shadow-lg shadow-purple-900/20">
+          &#128302;
+        </div>
+      )}
+      {isUser && (
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center flex-shrink-0 text-sm">
+          &#128100;
+        </div>
+      )}
+
+      {/* Message content */}
+      <div
+        className={`max-w-[80%] rounded-2xl px-4 py-3 ${
           isUser
-            ? "bg-purple-600/20 border-purple-500/30"
-            : "bg-card/60 border-border/50"
+            ? "bg-purple-600/20 border border-purple-500/25 rounded-tr-sm"
+            : "glass-card rounded-tl-sm"
         }`}
       >
         {message.parts?.map((part, i) => {
@@ -140,15 +276,15 @@ function MessageBubble({ message }: { message: UIMessage }) {
             return (
               <div
                 key={i}
-                className="prose prose-invert prose-sm max-w-none break-words"
+                className="prose-chat text-sm text-foreground/90 break-words"
               >
-                {part.text}
+                {isUser ? part.text : renderMarkdown(part.text)}
               </div>
             );
           }
           return null;
         })}
-      </Card>
+      </div>
     </div>
   );
 }
