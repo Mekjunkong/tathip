@@ -23,6 +23,11 @@ export function Header() {
               {t(language, "chat")}
             </Button>
           </Link>
+          <Link href="/tarot">
+            <Button variant="ghost" size="sm">
+              {t(language, "tarot")}
+            </Button>
+          </Link>
           <button
             type="button"
             onClick={() => setLanguage(language === "th" ? "en" : "th")}
