@@ -11,7 +11,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useChatStore } from "@/stores/chat-store";
 import type { BirthData } from "@/stores/chat-store";
 import { t } from "@/lib/i18n";
@@ -29,6 +28,7 @@ export function ChatInterface({ birthData }: ChatInterfaceProps) {
 
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
   const hasSentInitial = useRef(false);
 
   // Send the initial birth data message automatically on mount
@@ -42,9 +42,7 @@ export function ChatInterface({ birthData }: ChatInterfaceProps) {
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const isLoading = status === "streaming" || status === "submitted";
@@ -67,7 +65,7 @@ export function ChatInterface({ birthData }: ChatInterfaceProps) {
   return (
     <div className="flex flex-col h-full">
       {/* Messages area */}
-      <ScrollArea className="flex-1 px-4 py-6" ref={scrollRef}>
+      <div className="flex-1 overflow-y-auto px-4 py-6" ref={scrollRef}>
         <div className="max-w-2xl mx-auto space-y-5">
           {messages.map((message, index) => (
             <MessageBubble key={message.id} message={message} index={index} />
@@ -102,8 +100,11 @@ export function ChatInterface({ birthData }: ChatInterfaceProps) {
               </div>
             </div>
           )}
+
+          {/* Scroll anchor */}
+          <div ref={bottomRef} />
         </div>
-      </ScrollArea>
+      </div>
 
       {/* Input area */}
       <div className="border-t border-border/30 bg-background/60 backdrop-blur-xl p-4">
