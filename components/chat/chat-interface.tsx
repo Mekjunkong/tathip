@@ -22,28 +22,10 @@ interface ChatInterfaceProps {
   birthData: BirthData;
 }
 
-function createInitialMessages(birthData: BirthData): UIMessage[] {
-  return [
-    {
-      id: "birth-data-msg",
-      role: "user",
-      parts: [
-        {
-          type: "text",
-          text: `My birth details:\n- Date: ${birthData.date}\n- Time: ${birthData.time}\n- Place: ${birthData.place} (lat: ${birthData.lat}, lng: ${birthData.lng})\n\nPlease calculate my Thai birth chart and give me a reading.`,
-        },
-      ],
-    },
-  ];
-}
-
 export function ChatInterface({ birthData }: ChatInterfaceProps) {
   const language = useChatStore((s) => s.language);
-  const initialMessages = createInitialMessages(birthData);
 
-  const { messages, sendMessage, status, error } = useChat({
-    messages: initialMessages,
-  });
+  const { messages, sendMessage, status, error } = useChat({});
 
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
