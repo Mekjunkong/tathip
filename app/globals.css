@@ -298,3 +298,44 @@
 .animate-scale-in {
   animation: scale-in 0.5s ease-out forwards;
 }
+
+/* ── Animated Hero: star drift + sparkle ── */
+@keyframes starDrift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(var(--drift-x, 15px), -8px); }
+  50%  { transform: translate(calc(var(--drift-x, 15px) * 0.5), 12px); }
+  75%  { transform: translate(calc(var(--drift-x, 15px) * -0.3), -5px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.1; transform: scale(0.6) rotate(0deg); }
+  25%       { opacity: 0.9; transform: scale(1.1) rotate(45deg); }
+  50%       { opacity: 0.4; transform: scale(0.8) rotate(90deg); }
+  75%       { opacity: 0.8; transform: scale(1.0) rotate(135deg); }
+}
+
+@keyframes eyePulse {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.08); }
+}
+.animate-eye-pulse {
+  animation: eyePulse 2.5s ease-in-out infinite;
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes spinReverse {
+  from { transform: rotate(360deg); }
+  to   { transform: rotate(0deg); }
+}
+.animate-spin-slow {
+  animation: spinSlow 20s linear infinite;
+  transform-origin: 100px 110px;
+}
+.animate-spin-reverse {
+  animation: spinReverse 30s linear infinite;
+  transform-origin: 100px 110px;
+}
