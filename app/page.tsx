@@ -5,36 +5,41 @@ import { Button } from "@/components/ui/button";
 import { Starfield } from "@/components/ui/starfield";
 import { useChatStore } from "@/stores/chat-store";
 import { t } from "@/lib/i18n";
-import { Sparkles, Layers, Hash, Moon, ArrowRight, Eye } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { ZodiacIcon, TarotIcon, NumerologyIcon, BaZiIcon, DivineEyeIcon } from "@/components/icons/mystical-icons";
 
 const FEATURES = [
   {
-    icon: Sparkles,
+    Icon: ZodiacIcon,
     titleKey: "featureAstrology" as const,
     descKey: "featureAstrologyDesc" as const,
-    gradient: "from-violet-500 to-purple-600",
-    glow: "violet",
+    color: "text-violet-400",
+    borderHover: "hover:border-violet-500/30",
+    bgHover: "hover:bg-violet-500/5",
   },
   {
-    icon: Layers,
+    Icon: TarotIcon,
     titleKey: "featureTarot" as const,
     descKey: "featureTarotDesc" as const,
-    gradient: "from-indigo-500 to-blue-600",
-    glow: "indigo",
+    color: "text-indigo-400",
+    borderHover: "hover:border-indigo-500/30",
+    bgHover: "hover:bg-indigo-500/5",
   },
   {
-    icon: Hash,
+    Icon: NumerologyIcon,
     titleKey: "featureNumerology" as const,
     descKey: "featureNumerologyDesc" as const,
-    gradient: "from-fuchsia-500 to-pink-600",
-    glow: "fuchsia",
+    color: "text-fuchsia-400",
+    borderHover: "hover:border-fuchsia-500/30",
+    bgHover: "hover:bg-fuchsia-500/5",
   },
   {
-    icon: Moon,
+    Icon: BaZiIcon,
     titleKey: "featureBazi" as const,
     descKey: "featureBaziDesc" as const,
-    gradient: "from-amber-500 to-orange-600",
-    glow: "amber",
+    color: "text-amber-400",
+    borderHover: "hover:border-amber-500/30",
+    bgHover: "hover:bg-amber-500/5",
   },
 ] as const;
 
@@ -45,32 +50,29 @@ export default function HomePage() {
     <main className="relative flex min-h-dvh flex-col items-center px-4 overflow-hidden">
       <Starfield count={80} />
 
-      {/* Hero Section */}
+      {/* Hero */}
       <section className="relative z-10 flex flex-col items-center justify-center min-h-[85dvh] text-center max-w-3xl mx-auto">
-        {/* Mystical eye icon */}
-        <div className="relative mb-8 animate-fade-in">
-          <div className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-violet-600/20 to-indigo-600/20 blur-2xl animate-glow-pulse" />
-            <div className="absolute inset-2 rounded-full bg-gradient-to-br from-violet-900/40 to-indigo-900/40 backdrop-blur-sm border border-violet-500/20" />
-            <Eye className="relative w-10 h-10 md:w-14 md:h-14 text-violet-300 animate-float" strokeWidth={1.5} />
-          </div>
+        {/* Divine Eye hero icon */}
+        <div className="relative mb-10 animate-fade-in">
+          <div className="absolute inset-0 scale-150 blur-3xl bg-violet-600/10 rounded-full animate-glow-pulse" />
+          <DivineEyeIcon className="relative w-28 h-28 md:w-36 md:h-36 animate-float" />
         </div>
 
         {/* Title */}
         <div className="space-y-4 animate-fade-in-up" style={{ animationDelay: "200ms", animationFillMode: "both" }}>
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
-            <span className="bg-gradient-to-b from-white via-violet-200 to-violet-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-b from-white via-violet-200 to-violet-400/80 bg-clip-text text-transparent">
               {t(language, "siteName")}
             </span>
           </h1>
-          <p className="text-lg md:text-xl text-violet-300/70 font-light tracking-widest uppercase">
+          <p className="text-base md:text-lg text-violet-300/60 font-light tracking-[0.25em] uppercase">
             {t(language, "tagline")}
           </p>
         </div>
 
         {/* Description */}
         <p
-          className="mt-6 text-muted-foreground/80 text-base md:text-lg max-w-lg mx-auto leading-relaxed animate-fade-in-up"
+          className="mt-8 text-muted-foreground/70 text-base md:text-lg max-w-md mx-auto leading-relaxed animate-fade-in-up"
           style={{ animationDelay: "400ms", animationFillMode: "both" }}
         >
           {t(language, "aiDescription")}
@@ -97,7 +99,7 @@ export default function HomePage() {
             <Button
               size="lg"
               variant="outline"
-              className="text-base px-8 py-6 border-violet-500/25 text-violet-300 hover:bg-violet-500/10 hover:border-violet-400/40 hover:text-violet-200 transition-all duration-300 cursor-pointer backdrop-blur-sm"
+              className="text-base px-8 py-6 border-violet-500/20 text-violet-300/80 hover:bg-violet-500/10 hover:border-violet-400/30 hover:text-violet-200 transition-all duration-300 cursor-pointer backdrop-blur-sm"
             >
               {t(language, "tryTarot")}
             </Button>
@@ -105,45 +107,36 @@ export default function HomePage() {
         </div>
 
         {/* Scroll hint */}
-        <div className="absolute bottom-8 animate-bounce opacity-30">
-          <div className="w-5 h-8 rounded-full border-2 border-violet-400/40 flex items-start justify-center p-1">
-            <div className="w-1 h-2 rounded-full bg-violet-400/60" />
+        <div className="absolute bottom-8 animate-bounce opacity-20">
+          <div className="w-5 h-8 rounded-full border border-violet-400/30 flex items-start justify-center p-1.5">
+            <div className="w-0.5 h-1.5 rounded-full bg-violet-400/50" />
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="relative z-10 w-full max-w-5xl pb-20">
+      {/* Features */}
+      <section className="relative z-10 w-full max-w-4xl pb-24">
         <h2
-          className="text-center text-2xl md:text-3xl font-semibold mb-12 bg-gradient-to-r from-violet-300 to-indigo-300 bg-clip-text text-transparent animate-fade-in-up"
+          className="text-center text-xl md:text-2xl font-medium mb-12 text-violet-300/50 tracking-wide animate-fade-in-up"
           style={{ animationDelay: "800ms", animationFillMode: "both" }}
         >
-          {language === "th" ? "ศาสตร์ที่ครอบคลุม" : "Comprehensive Systems"}
+          {language === "th" ? "ศาสตร์แห่งการพยากรณ์" : "The Arts of Divination"}
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {FEATURES.map((feature, i) => {
-            const Icon = feature.icon;
+            const { Icon } = feature;
             return (
-              <Link
-                key={i}
-                href="/chat"
-                className="group cursor-pointer"
-                style={{ animationDelay: `${900 + i * 100}ms`, animationFillMode: "both" }}
-              >
-                <div className="relative h-full rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-md p-6 transition-all duration-300 hover:border-violet-500/30 hover:bg-white/[0.06] hover:shadow-lg hover:shadow-violet-900/20 hover:-translate-y-1 overflow-hidden">
-                  {/* Subtle glow on hover */}
-                  <div className={`absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br ${feature.gradient} rounded-full opacity-0 group-hover:opacity-10 blur-2xl transition-opacity duration-500`} />
-
+              <Link key={i} href="/chat" className="group cursor-pointer">
+                <div className={`relative h-full rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 md:p-6 text-center transition-all duration-300 ${feature.borderHover} ${feature.bgHover} hover:-translate-y-1`}>
                   {/* Icon */}
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className="w-6 h-6 text-white" strokeWidth={1.5} />
+                  <div className={`${feature.color} flex justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <Icon className="w-12 h-12 md:w-14 md:h-14" />
                   </div>
-
                   {/* Text */}
-                  <h3 className="font-semibold text-base text-foreground/90 mb-2 group-hover:text-white transition-colors">
+                  <h3 className="font-semibold text-sm md:text-base text-foreground/80 mb-1.5 group-hover:text-foreground transition-colors">
                     {t(language, feature.titleKey)}
                   </h3>
-                  <p className="text-sm text-muted-foreground/70 leading-relaxed">
+                  <p className="text-xs md:text-sm text-muted-foreground/50 leading-relaxed">
                     {t(language, feature.descKey)}
                   </p>
                 </div>
@@ -153,8 +146,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Bottom gradient */}
-      <div className="fixed bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent pointer-events-none z-[1]" />
+      <div className="fixed bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none z-[1]" />
     </main>
   );
 }
