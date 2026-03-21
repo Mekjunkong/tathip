@@ -20,7 +20,7 @@ AI-powered fortune telling chatbot combining Thai, Western, Vedic, Chinese astro
 | Forms | React Hook Form + Zod |
 | Backend | Supabase (Auth + PostgreSQL + pgvector) |
 | AI | AI SDK v6, AI Gateway (anthropic/claude-sonnet-4.6) |
-| Astrology | Swiss Ephemeris (swisseph npm, native addon) |
+| Astrology | astronomy-engine (pure JS, Lahiri ayanamsa) |
 | Language | TypeScript (strict) |
 | Deployment | Vercel |
 
@@ -32,10 +32,10 @@ User → Chat UI (useChat) → /api/chat (streamText) → AI Gateway (Claude)
                           ┌─────────┴─────────┐
                           ▼                   ▼
                    Thai Birth Chart      RAG Knowledge
-                   (Swiss Ephemeris)     (pgvector search)
+                   (astronomy-engine)    (pgvector search)
 ```
 
-- **Rules Engine:** Swiss Ephemeris with Lahiri ayanamsa for sidereal planetary calculations. Code in `lib/astrology/`.
+- **Rules Engine:** astronomy-engine (pure JS) with Lahiri ayanamsa for sidereal planetary calculations. Code in `lib/astrology/`.
 - **RAG Knowledge Base:** Supabase pgvector with text-embedding-3-small. Authoritative Thai astrology texts chunked and embedded. Code in `lib/ai/rag.ts`.
 - **AI Chat:** AI SDK v6 with tool calling. Model routes through AI Gateway as plain string `"anthropic/claude-sonnet-4.6"`. Code in `app/api/chat/route.ts`.
 
@@ -45,7 +45,7 @@ User → Chat UI (useChat) → /api/chat (streamText) → AI Gateway (Claude)
 - **AI SDK v6:** Use `inputSchema` (not `parameters`), `convertToModelMessages()` (async), `toUIMessageStreamResponse()`, `stopWhen: stepCountIs(N)`
 - **Next.js 16:** Uses `proxy.ts` (not `middleware.ts`). All request APIs are async (`await cookies()`, etc.)
 - **Supabase SSR:** Browser client in `lib/supabase/client.ts`, server client in `lib/supabase/server.ts`
-- **swisseph:** Native Node.js addon — must be in `serverExternalPackages` in next.config.ts
+- **astronomy-engine:** Pure JavaScript — no native addons, no `serverExternalPackages` needed
 - **Bilingual:** All UI text uses `t(language, key)` from `lib/i18n.ts`. Default language: Thai.
 - **Theme:** Dark mystical (deep indigo/purple). oklch color tokens in globals.css.
 
