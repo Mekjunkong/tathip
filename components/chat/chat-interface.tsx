@@ -35,9 +35,10 @@ export function ChatInterface({ birthData }: ChatInterfaceProps) {
   useEffect(() => {
     if (hasSentInitial.current) return;
     hasSentInitial.current = true;
-    sendMessage({
-      text: `My birth details:\n- Date: ${birthData.date}\n- Time: ${birthData.time}\n- Place: ${birthData.place} (lat: ${birthData.lat}, lng: ${birthData.lng})\n\nPlease calculate my Thai birth chart and give me a reading.`,
-    });
+    const msg = language === "th"
+      ? `ข้อมูลวันเกิดของฉัน:\n- วันเกิด: ${birthData.date}\n- เวลาเกิด: ${birthData.time}\n- สถานที่เกิด: ${birthData.place} (lat: ${birthData.lat}, lng: ${birthData.lng})\n\nกรุณาคำนวณดวงชะตาและทำนายดวงให้หน่อยค่ะ`
+      : `My birth details:\n- Date: ${birthData.date}\n- Time: ${birthData.time}\n- Place: ${birthData.place} (lat: ${birthData.lat}, lng: ${birthData.lng})\n\nPlease calculate my Thai birth chart and give me a reading.`;
+    sendMessage({ text: msg });
   }, [birthData, sendMessage]);
 
   // Auto-scroll to bottom on new messages
