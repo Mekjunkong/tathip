@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Noto_Sans_Thai } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Sans_Thai, Cinzel_Decorative } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
@@ -19,6 +19,12 @@ const notoSansThai = Noto_Sans_Thai({
   weight: ["300", "400", "500", "600", "700"],
 });
 
+const cinzelDecorative = Cinzel_Decorative({
+  subsets: ["latin"],
+  variable: "--font-cinzel",
+  weight: ["400", "700", "900"],
+});
+
 export const metadata: Metadata = {
   title: "TaThip — AI Fortune Teller",
   description:
@@ -33,7 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="th"
-      className={`${geistSans.variable} ${geistMono.variable} ${notoSansThai.variable} dark`}
+      className={`${geistSans.variable} ${geistMono.variable} ${notoSansThai.variable} ${cinzelDecorative.variable} dark`}
     >
       <body className="min-h-screen font-sans antialiased">
         <TooltipProvider>{children}</TooltipProvider>

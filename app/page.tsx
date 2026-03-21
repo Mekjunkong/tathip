@@ -60,8 +60,8 @@ export default function HomePage() {
 
         {/* Title */}
         <div className="space-y-4 animate-fade-in-up" style={{ animationDelay: "200ms", animationFillMode: "both" }}>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
-            <span className="bg-gradient-to-b from-white via-violet-200 to-violet-400/80 bg-clip-text text-transparent">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-wider" style={{ fontFamily: "var(--font-cinzel), serif" }}>
+            <span className="bg-gradient-to-b from-white via-violet-200 to-violet-400/80 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]">
               {t(language, "siteName")}
             </span>
           </h1>

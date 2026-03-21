@@ -109,42 +109,92 @@ export function BaZiIcon({ className = "w-8 h-8" }: IconProps) {
   );
 }
 
-/** Crystal ball / divine eye - main hero icon */
+/** Hamsa hand with evil eye inside Star of David — main hero icon */
 export function DivineEyeIcon({ className = "w-8 h-8" }: IconProps) {
   return (
-    <svg viewBox="0 0 96 96" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
-      {/* Outer glow ring */}
-      <circle cx="48" cy="48" r="40" stroke="url(#eyeGrad)" strokeWidth="1" opacity="0.4" />
-      <circle cx="48" cy="48" r="36" stroke="url(#eyeGrad)" strokeWidth="0.5" opacity="0.2" />
-      {/* Eye shape */}
+    <svg viewBox="0 0 120 140" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hamsaGrad" x1="20" y1="10" x2="100" y2="130">
+          <stop offset="0%" stopColor="#ddd6fe" />
+          <stop offset="40%" stopColor="#a78bfa" />
+          <stop offset="100%" stopColor="#6d28d9" />
+        </linearGradient>
+        <radialGradient id="eyeCenter" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#c4b5fd" />
+          <stop offset="60%" stopColor="#7c3aed" />
+          <stop offset="100%" stopColor="#4c1d95" />
+        </radialGradient>
+        <radialGradient id="irisGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#e9d5ff" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      {/* Hamsa hand shape */}
       <path
-        d="M16 48c0 0 14-20 32-20s32 20 32 20-14 20-32 20S16 48 16 48z"
-        stroke="url(#eyeGrad)"
-        strokeWidth="2"
+        d="M60 8 C60 8 52 8 52 20 L52 42 C48 38 40 28 36 20 C36 8 28 8 28 8 C28 8 20 8 20 20 L20 55 C20 55 20 62 24 70 L24 70 C28 80 36 92 38 98 C40 104 44 112 60 118 C76 112 80 104 82 98 C84 92 92 80 96 70 L96 70 C100 62 100 55 100 55 L100 20 C100 8 92 8 92 8 C92 8 84 8 84 20 C80 28 72 38 68 42 L68 20 C68 8 60 8 60 8 Z"
+        stroke="url(#hamsaGrad)"
+        strokeWidth="1.5"
+        fill="none"
+        opacity="0.7"
+      />
+
+      {/* Inner decorative border following hand shape */}
+      <path
+        d="M60 16 C60 16 56 16 56 24 L56 48 C52 44 46 36 42 28 C42 20 38 16 34 16 C30 16 26 16 26 24 L26 55 C26 55 26 60 29 67 C32 76 38 86 40 92 C42 97 46 106 60 112 C74 106 78 97 80 92 C82 86 88 76 91 67 C94 60 94 55 94 55 L94 24 C94 16 90 16 86 16 C82 16 78 20 78 28 C74 36 68 44 64 48 L64 24 C64 16 60 16 60 16 Z"
+        stroke="url(#hamsaGrad)"
+        strokeWidth="0.5"
+        fill="none"
+        opacity="0.25"
+      />
+
+      {/* Star of David (two overlapping triangles) */}
+      <path
+        d="M60 46 L74 70 L46 70 Z"
+        stroke="url(#hamsaGrad)"
+        strokeWidth="1.2"
+        fill="none"
+        opacity="0.5"
+      />
+      <path
+        d="M60 78 L46 54 L74 54 Z"
+        stroke="url(#hamsaGrad)"
+        strokeWidth="1.2"
+        fill="none"
+        opacity="0.5"
+      />
+
+      {/* Evil eye - outer almond shape */}
+      <path
+        d="M42 62 C42 62 50 50 60 50 C70 50 78 62 78 62 C78 62 70 74 60 74 C50 74 42 62 42 62 Z"
+        stroke="url(#hamsaGrad)"
+        strokeWidth="1.5"
+        fill="none"
         opacity="0.8"
       />
-      {/* Iris */}
-      <circle cx="48" cy="48" r="12" stroke="url(#eyeGrad)" strokeWidth="1.5" opacity="0.7" />
-      {/* Pupil */}
-      <circle cx="48" cy="48" r="5" fill="url(#eyeGrad)" opacity="0.8" />
-      {/* Light reflection */}
-      <circle cx="44" cy="44" r="2" fill="white" opacity="0.6" />
-      {/* Eyelash rays */}
-      {[-40, -25, -10, 10, 25, 40].map((deg, i) => {
-        const angle = (deg - 90) * (Math.PI / 180);
-        const x1 = 48 + 22 * Math.cos(angle);
-        const y1 = 48 + 22 * Math.sin(angle);
-        const x2 = 48 + 28 * Math.cos(angle);
-        const y2 = 48 + 28 * Math.sin(angle);
-        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="url(#eyeGrad)" strokeWidth="1" opacity="0.4" />;
-      })}
-      <defs>
-        <linearGradient id="eyeGrad" x1="16" y1="16" x2="80" y2="80">
-          <stop offset="0%" stopColor="#c4b5fd" />
-          <stop offset="50%" stopColor="#a78bfa" />
-          <stop offset="100%" stopColor="#7c3aed" />
-        </linearGradient>
-      </defs>
+
+      {/* Evil eye - outer iris */}
+      <circle cx="60" cy="62" r="9" stroke="url(#hamsaGrad)" strokeWidth="1" opacity="0.6" />
+      <circle cx="60" cy="62" r="9" fill="url(#irisGlow)" opacity="0.15" />
+
+      {/* Evil eye - inner iris ring */}
+      <circle cx="60" cy="62" r="6" fill="url(#eyeCenter)" opacity="0.4" />
+
+      {/* Evil eye - pupil */}
+      <circle cx="60" cy="62" r="3.5" fill="url(#eyeCenter)" opacity="0.9" />
+
+      {/* Evil eye - light reflection */}
+      <circle cx="57.5" cy="59.5" r="1.5" fill="white" opacity="0.7" />
+      <circle cx="63" cy="60.5" r="0.7" fill="white" opacity="0.4" />
+
+      {/* Small decorative dots on fingertips */}
+      <circle cx="60" cy="11" r="1.5" fill="url(#hamsaGrad)" opacity="0.5" />
+      <circle cx="28" cy="11" r="1.5" fill="url(#hamsaGrad)" opacity="0.4" />
+      <circle cx="92" cy="11" r="1.5" fill="url(#hamsaGrad)" opacity="0.4" />
+
+      {/* Small crescents on palm sides */}
+      <path d="M30 85 C32 82 34 80 36 82" stroke="url(#hamsaGrad)" strokeWidth="0.8" opacity="0.3" />
+      <path d="M90 85 C88 82 86 80 84 82" stroke="url(#hamsaGrad)" strokeWidth="0.8" opacity="0.3" />
     </svg>
   );
 }

@@ -13,9 +13,8 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl">
       <div className="container flex h-14 items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl">&#128302;</span>
-          <span className="font-semibold text-lg bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">
-            TaThip
+          <span className="text-lg tracking-widest bg-gradient-to-r from-violet-300 to-indigo-300 bg-clip-text text-transparent" style={{ fontFamily: "var(--font-cinzel), serif" }}>
+            TATHIP
           </span>
         </Link>
         <nav className="flex items-center gap-4">
