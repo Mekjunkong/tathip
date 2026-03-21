@@ -29,6 +29,27 @@ export const metadata: Metadata = {
   title: "TaThip — AI Fortune Teller",
   description:
     "The Divine Eye that sees your destiny. AI-powered fortune telling combining Thai, Western, Vedic, and Chinese astrology.",
+  openGraph: {
+    title: "TaThip — AI Fortune Teller",
+    description:
+      "The Divine Eye that sees your destiny. AI-powered fortune telling combining Thai, Western, Vedic, and Chinese astrology.",
+    images: [
+      {
+        url: "/tathip-banner.png",
+        width: 2752,
+        height: 1536,
+        alt: "TATHIP — ตาทิพย์ที่มองเห็นชะตาของคุณ",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TaThip — AI Fortune Teller",
+    description:
+      "The Divine Eye that sees your destiny. AI-powered fortune telling combining Thai, Western, Vedic, and Chinese astrology.",
+    images: ["/tathip-banner.png"],
+  },
 };
 
 export default function RootLayout({
