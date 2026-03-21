@@ -1,0 +1,93 @@
+/**
+ * Simple bilingual translation constants (Thai / English).
+ *
+ * No i18n framework — just a plain object + helper function.
+ */
+
+export const translations = {
+  th: {
+    siteName: "TaThip",
+    tagline: "ตาทิพย์ที่มองเห็นชะตาของคุณ",
+    startReading: "เริ่มดูดวง",
+    signIn: "เข้าสู่ระบบ",
+    signUp: "สมัครสมาชิก",
+    signOut: "ออกจากระบบ",
+    profile: "โปรไฟล์",
+    chat: "ดูดวง",
+    birthData: "ข้อมูลวันเกิด",
+    birthDate: "วันเกิด",
+    birthTime: "เวลาเกิด",
+    birthPlace: "สถานที่เกิด",
+    birthTimeHint: "ไม่ทราบเวลา — ผลจะมีความแม่นยำน้อยลง",
+    beginReading: "เริ่มดูดวง",
+    askPlaceholder: "ถามเรื่องดวงชะตาของคุณ...",
+    send: "ส่ง",
+    readyMessage: "ตาทิพย์พร้อมแล้ว",
+    readySubtext: "ถามเรื่องใดก็ได้เกี่ยวกับชะตาของคุณ",
+    email: "อีเมล",
+    password: "รหัสผ่าน",
+    signingIn: "กำลังเข้าสู่ระบบ...",
+    noAccount: "ยังไม่มีบัญชี?",
+    hasAccount: "มีบัญชีอยู่แล้ว?",
+    creatingAccount: "กำลังสร้างบัญชี...",
+    saveReadings: "บันทึกผลดูดวงและดูดวงไม่จำกัด",
+    displayName: "ชื่อที่แสดง",
+    gender: "เพศ",
+    save: "บันทึก",
+    saving: "กำลังบันทึก...",
+    welcomeBack: "ยินดีต้อนรับกลับ",
+    signInToContinue: "เข้าสู่ระบบเพื่อดูดวงต่อ",
+    createAccount: "สร้างบัญชี",
+    birthDataSubtext: "เพื่อเปิดเผยสิ่งที่ดวงดาวบอกคุณ",
+    supportedPlaces:
+      "รองรับ: Bangkok, Chiang Mai, Phuket, Khon Kaen, Pattaya (ค่าเริ่มต้น Bangkok)",
+    aiDescription:
+      "AI ดูดวงผสมผสานโหราศาสตร์ไทย ตะวันตก เวทิค และจีน",
+  },
+  en: {
+    siteName: "TaThip",
+    tagline: "The Divine Eye that sees your destiny",
+    startReading: "Start Reading",
+    signIn: "Sign In",
+    signUp: "Sign Up",
+    signOut: "Sign Out",
+    profile: "Profile",
+    chat: "Chat",
+    birthData: "Enter Your Birth Data",
+    birthDate: "Date of Birth",
+    birthTime: "Time of Birth",
+    birthPlace: "Place of Birth",
+    birthTimeHint: "Leave blank if unknown — reading will be less precise",
+    beginReading: "Begin Reading",
+    askPlaceholder: "Ask about your chart...",
+    send: "Send",
+    readyMessage: "TaThip is ready",
+    readySubtext: "Ask me anything about your destiny",
+    email: "Email",
+    password: "Password",
+    signingIn: "Signing in...",
+    noAccount: "Don't have an account?",
+    hasAccount: "Already have an account?",
+    creatingAccount: "Creating account...",
+    saveReadings: "Save your readings and get unlimited readings",
+    displayName: "Display Name",
+    gender: "Gender",
+    save: "Save",
+    saving: "Saving...",
+    welcomeBack: "Welcome Back",
+    signInToContinue: "Sign in to continue your readings",
+    createAccount: "Create Account",
+    birthDataSubtext: "To reveal what the stars hold for you",
+    supportedPlaces:
+      "Supported: Bangkok, Chiang Mai, Phuket, Khon Kaen, Pattaya (defaults to Bangkok)",
+    aiDescription:
+      "AI-powered fortune telling combining Thai, Western, Vedic, and Chinese astrology",
+  },
+} as const;
+
+export type Language = keyof typeof translations;
+export type TranslationKey = keyof (typeof translations)["en"];
+
+export function t(lang: Language, key: TranslationKey): string {
+  return translations[lang][key];
+}
