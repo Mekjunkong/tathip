@@ -171,7 +171,7 @@ export function AnimatedHero() {
 
           {/* The actual Hamsa PNG */}
           <Image
-            src="/hamsa-hand.png"
+            src="/hamsa-hand.webp"
             alt="Hamsa Hand — TATHIP mystical symbol"
             fill
             priority

@@ -2,7 +2,7 @@
 
 import { Header } from "@/components/layout/header";
 import { Starfield } from "@/components/ui/starfield";
-import { TarotCircle } from "@/components/tarot/tarot-circle";
+import { TarotSpread } from "@/components/tarot/tarot-spread";
 import { useChatStore } from "@/stores/chat-store";
 
 export default function TarotPage() {
@@ -13,7 +13,7 @@ export default function TarotPage() {
       <Starfield />
       <Header />
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-8">
-        <TarotCircle language={language} />
+        <TarotSpread language={language} />
       </main>
     </div>
   );

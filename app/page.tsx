@@ -12,10 +12,10 @@ function generateStars(count: number, seed = 99): StarDef[] {
 }
 
 const SYSTEMS = [
-  { img: "/thai-astro.png", color: "#f59e0b", glow: "rgba(245,158,11,0.3)", border: "rgba(245,158,11,0.25)", sub: { th: "ระบบโบราณ", en: "Ancient System" }, title: { th: "โหราศาสตร์ไทย", en: "Thai Astrology" }, desc: { th: "คำนวณจากดาวนพเคราะห์ทั้ง 9 ดวง ตามหลักโหราศาสตร์ไทยดั้งเดิม", en: "Calculated from 9 celestial bodies using traditional Thai astrological principles" } },
-  { img: "/western-astro.png", color: "#a78bfa", glow: "rgba(167,139,250,0.3)", border: "rgba(167,139,250,0.25)", sub: { th: "TROPICAL ZODIAC", en: "TROPICAL ZODIAC" }, title: { th: "โหราศาสตร์ตะวันตก", en: "Western Astrology" }, desc: { th: "12 ราศีตะวันตก วิเคราะห์ดาวเคราะห์แต่ละราศีอย่างละเอียด", en: "12 tropical zodiac signs with detailed planetary analysis" } },
-  { img: "/vedic-astro.png", color: "#34d399", glow: "rgba(52,211,153,0.3)", border: "rgba(52,211,153,0.25)", sub: { th: "JYOTISH · LAHIRI", en: "JYOTISH · LAHIRI" }, title: { th: "โหราศาสตร์เวทิค", en: "Vedic Astrology" }, desc: { th: "ระบบ Sidereal จากอินเดียโบราณ ใช้ Ayanamsa Lahiri มาตรฐาน", en: "Sidereal system from ancient India using standard Lahiri Ayanamsa" } },
-  { img: "/chinese-astro.png", color: "#f87171", glow: "rgba(248,113,113,0.3)", border: "rgba(248,113,113,0.25)", sub: { th: "บาจื่อ · ห้าธาตุ", en: "BA ZI · 八字" }, title: { th: "โหราศาสตร์จีน", en: "Chinese Astrology" }, desc: { th: "วิเคราะห์ธาตุทั้ง 5 และปีนักษัตร 12 ราศีตามหลักจีนโบราณ", en: "Analyze 5 elements and 12 zodiac animals using ancient Chinese principles" } },
+  { img: "/thai-astro.webp", color: "#f59e0b", glow: "rgba(245,158,11,0.3)", border: "rgba(245,158,11,0.25)", sub: { th: "ระบบโบราณ", en: "Ancient System" }, title: { th: "โหราศาสตร์ไทย", en: "Thai Astrology" }, desc: { th: "คำนวณจากดาวนพเคราะห์ทั้ง 9 ดวง ตามหลักโหราศาสตร์ไทยดั้งเดิม", en: "Calculated from 9 celestial bodies using traditional Thai astrological principles" } },
+  { img: "/western-astro.webp", color: "#a78bfa", glow: "rgba(167,139,250,0.3)", border: "rgba(167,139,250,0.25)", sub: { th: "TROPICAL ZODIAC", en: "TROPICAL ZODIAC" }, title: { th: "โหราศาสตร์ตะวันตก", en: "Western Astrology" }, desc: { th: "12 ราศีตะวันตก วิเคราะห์ดาวเคราะห์แต่ละราศีอย่างละเอียด", en: "12 tropical zodiac signs with detailed planetary analysis" } },
+  { img: "/vedic-astro.webp", color: "#34d399", glow: "rgba(52,211,153,0.3)", border: "rgba(52,211,153,0.25)", sub: { th: "JYOTISH · LAHIRI", en: "JYOTISH · LAHIRI" }, title: { th: "โหราศาสตร์เวทิค", en: "Vedic Astrology" }, desc: { th: "ระบบ Sidereal จากอินเดียโบราณ ใช้ Ayanamsa Lahiri มาตรฐาน", en: "Sidereal system from ancient India using standard Lahiri Ayanamsa" } },
+  { img: "/chinese-astro.webp", color: "#f87171", glow: "rgba(248,113,113,0.3)", border: "rgba(248,113,113,0.25)", sub: { th: "บาจื่อ · ห้าธาตุ", en: "BA ZI · 八字" }, title: { th: "โหราศาสตร์จีน", en: "Chinese Astrology" }, desc: { th: "วิเคราะห์ธาตุทั้ง 5 และปีนักษัตร 12 ราศีตามหลักจีนโบราณ", en: "Analyze 5 elements and 12 zodiac animals using ancient Chinese principles" } },
 ];
 
 const REVIEWS = [
@@ -34,7 +34,7 @@ export default function HomePage() {
       {/* HERO */}
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <Image src="/hero-bg.png" alt="Cosmic background" fill className="object-cover object-center" priority quality={90} />
+          <Image src="/hero-bg.webp" alt="Cosmic background" fill className="object-cover object-center" priority quality={90} />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/70" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
         </div>
@@ -46,7 +46,7 @@ export default function HomePage() {
         <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto">
           <div className="relative mb-6 md:mb-8">
             <div className="absolute inset-0 rounded-full blur-3xl opacity-60" style={{ background: "radial-gradient(circle, rgba(139,92,246,0.8) 0%, rgba(79,70,229,0.4) 50%, transparent 70%)" }} />
-            <Image src="/hamsa-hand.png" alt="TATHIP Hamsa" width={180} height={180} className="relative z-10" style={{ filter: "drop-shadow(0 0 30px rgba(139,92,246,0.8)) drop-shadow(0 0 60px rgba(79,70,229,0.4))", animation: "float 6s ease-in-out infinite" }} priority />
+            <Image src="/hamsa-hand.webp" alt="TATHIP Hamsa" width={180} height={180} className="relative z-10" style={{ filter: "drop-shadow(0 0 30px rgba(139,92,246,0.8)) drop-shadow(0 0 60px rgba(79,70,229,0.4))", animation: "float 6s ease-in-out infinite" }} priority />
           </div>
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-[0.15em] mb-4" style={{ fontFamily: "var(--font-cinzel), serif", background: "linear-gradient(135deg, #ffffff 0%, #e0d7ff 30%, #c4b5fd 60%, #a78bfa 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", filter: "drop-shadow(0 0 40px rgba(167,139,250,0.5))" }}>TATHIP</h1>
           <p className="text-lg md:text-2xl text-white/90 tracking-[0.2em] mb-2 font-light">{language === "th" ? "ตาทิพย์ที่มองเห็นชะตาของคุณ" : "The Divine Eye that sees your destiny"}</p>
@@ -91,7 +91,7 @@ export default function HomePage() {
       {/* 4 SCIENCES */}
       <section className="relative z-10 w-full py-24 md:py-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <Image src="/features-bg.png" alt="" fill className="object-cover opacity-25" />
+          <Image src="/features-bg.webp" alt="" fill className="object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#050510] via-transparent to-[#050510]" />
         </div>
         <div className="relative z-10 max-w-6xl mx-auto px-4">
@@ -176,7 +176,7 @@ export default function HomePage() {
             <div className="relative flex justify-center">
               <div className="relative w-72 h-96 md:w-80 md:h-[28rem]">
                 <div className="absolute inset-0 rounded-2xl blur-3xl opacity-50" style={{ background: "radial-gradient(circle, rgba(139,92,246,0.6) 0%, rgba(79,70,229,0.3) 50%, transparent 70%)" }} />
-                <Image src="/tarot-preview.png" alt="Tarot cards" fill className="object-cover rounded-2xl relative z-10" style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(139,92,246,0.3)" }} />
+                <Image src="/tarot-preview.webp" alt="Tarot cards" fill className="object-cover rounded-2xl relative z-10" style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(139,92,246,0.3)" }} />
               </div>
             </div>
           </div>
@@ -209,7 +209,7 @@ export default function HomePage() {
       {/* DONATION */}
       <section className="relative z-10 w-full py-24 md:py-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <Image src="/donation-bg.png" alt="" fill className="object-cover" />
+          <Image src="/donation-bg.webp" alt="" fill className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#050510] via-black/60 to-[#050510]" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/50" />
         </div>
