@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans_Thai, Cinzel_Decorative } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/components/auth/auth-provider";
+import { TaThipJsonLd } from "@/components/seo/json-ld";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,6 +28,7 @@ const cinzelDecorative = Cinzel_Decorative({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://tathip.com"),
   title: "TaThip — AI Fortune Teller",
   description:
     "The Divine Eye that sees your destiny. AI-powered fortune telling combining Thai, Western, Vedic, and Chinese astrology.",
@@ -63,7 +66,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${notoSansThai.variable} ${cinzelDecorative.variable} dark`}
     >
       <body className="min-h-screen font-sans antialiased">
-        <TooltipProvider>{children}</TooltipProvider>
+        <TaThipJsonLd />
+        <AuthProvider>
+          <TooltipProvider>{children}</TooltipProvider>
+        </AuthProvider>
       </body>
     </html>
   );

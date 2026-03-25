@@ -23,6 +23,7 @@ import {
   analyzeThaiNumber,
 } from "@/lib/numerology/calculator";
 import { calculateBaZi, formatBaZiChart } from "@/lib/astrology/bazi";
+import { calculateFengShui } from "@/lib/fengshui/calculator";
 
 /**
  * Format a planet position into a human-readable summary line.
@@ -230,6 +231,41 @@ export const chatTools = {
         return {
           success: false,
           error: error instanceof Error ? error.message : "Failed to calculate BaZi chart",
+        };
+      }
+    },
+  }),
+
+  calculate_fengshui: tool({
+    description:
+      "Calculate Feng Shui Kua number and directional analysis based on birth year and gender. Returns auspicious and inauspicious directions for home/office layout, sleeping direction, desk facing direction, and more. Use this when the user asks about Feng Shui, room arrangement, lucky directions, or home/office energy.",
+    inputSchema: z.object({
+      birthYear: z.number().describe("Birth year (e.g., 1990)"),
+      gender: z
+        .enum(["male", "female"])
+        .describe("Gender for Kua number calculation"),
+    }),
+    execute: async (input) => {
+      try {
+        const result = calculateFengShui(input.birthYear, input.gender);
+        return {
+          success: true,
+          kuaNumber: result.kuaNumber,
+          group: `${result.group} (${result.groupThai})`,
+          element: `${result.element} (${result.elementThai})`,
+          bestDirection: `${result.bestDirection.direction} (${result.bestDirection.directionThai}) — ${result.bestDirection.star}: ${result.bestDirection.meaning}`,
+          worstDirection: `${result.worstDirection.direction} (${result.worstDirection.directionThai}) — ${result.worstDirection.star}: ${result.worstDirection.meaning}`,
+          auspiciousDirections: result.directions
+            .filter((d) => d.type === "auspicious")
+            .map((d) => `${d.direction} (${d.directionThai}) — ${d.star} (${d.starThai}): ${d.meaning} / ${d.meaningThai}`),
+          inauspiciousDirections: result.directions
+            .filter((d) => d.type === "inauspicious")
+            .map((d) => `${d.direction} (${d.directionThai}) — ${d.star} (${d.starThai}): ${d.meaning} / ${d.meaningThai}`),
+        };
+      } catch (error) {
+        return {
+          success: false,
+          error: error instanceof Error ? error.message : "Failed to calculate Feng Shui",
         };
       }
     },
